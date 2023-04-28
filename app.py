@@ -10,7 +10,9 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def index():
     return render_template("index.html")
 
-
+@app.route('/signin')
+def signin():
+    return render_template("sign-up.html")
 
 
 if __name__ == '__main__':
