@@ -16,6 +16,12 @@ def connect_db():
 @app.route('/')
 def index():
     return render_template("index.html")
+
+
+@app.route('/fascarsadmin')
+def fascarsadmin():
+    return render_template("admin.html")
+
 #rendering the signin page
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -76,8 +82,8 @@ def login():
                 session['username'] = useremail
                 
                 #if the mail is admins .. then redirect to his dashboard not the users.
-                if useremail == 'printease2023@gmail.com':
-                    return redirect('/admin')
+                if useremail == 'admin@fascars.com':
+                    return redirect('/fascarsadmin')
                 print("logged in sucessfully.")
                 return redirect('/')
             
