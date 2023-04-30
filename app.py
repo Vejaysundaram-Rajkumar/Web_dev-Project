@@ -56,7 +56,7 @@ def signin():
 def login():
     #checking if already any useer logged in and that person is in session or not.
     if 'username' in session:
-        return render_template('log-in.html')
+        return render_template('customerdash.html')
     
     #checking if the user subbmitted the form for login or not.
     if request.method == 'POST':
