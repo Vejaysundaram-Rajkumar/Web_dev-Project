@@ -4,8 +4,7 @@ import hashlib
 
 #Creating an object for the flask called app
 app = Flask(__name__)
-
-
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 #Connect with the customers database to store the user details
 def connect_db():
@@ -18,7 +17,7 @@ def connect_db():
 def index():
     return render_template("index.html")
 #rendering the signin page
-@app.route('/signin')
+@app.route('/signin', methods=['GET', 'POST'])
 def signin():
     if 'username' in session:
         return redirect(url_for('#'))
@@ -75,13 +74,17 @@ def login():
             if password_hash == user[2]:
                 #Setting the session in that particular user's session 
                 session['username'] = useremail
+                
                 #if the mail is admins .. then redirect to his dashboard not the users.
                 if useremail == 'printease2023@gmail.com':
                     return redirect('/admin')
+                print("logged in sucessfully.")
                 return redirect('/')
+            
             else:
                 err_message="Invalid mail or password!!"
                 return render_template('index.html')
+        
         else:
             err_message="Invalid mail or password!!"
             return render_template('index.html')
