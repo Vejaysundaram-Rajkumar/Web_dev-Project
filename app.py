@@ -56,7 +56,7 @@ def signin():
 def login():
     #checking if already any useer logged in and that person is in session or not.
     if 'username' in session:
-        return redirect(url_for('/'))
+        return render_template('log-in.html')
     
     #checking if the user subbmitted the form for login or not.
     if request.method == 'POST':
@@ -85,7 +85,7 @@ def login():
                 if useremail == 'admin@fascars.com':
                     return redirect('/fascarsadmin')
                 print("logged in sucessfully.")
-                return redirect('/')
+                return redirect('/dash')
             
             else:
                 err_message="Invalid mail or password!!"
@@ -97,11 +97,17 @@ def login():
     return render_template('log-in.html')
 
 #logging out from the session of the user or the administrator
-
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect('/')
+
+#customer dashboard for buying,selling and repair booking
+@app.route('/dash')
+def dash():
+    return render_template('customerdash.html')
+
+
 
 #rendering the privacy policy page
 @app.route('/pp')
