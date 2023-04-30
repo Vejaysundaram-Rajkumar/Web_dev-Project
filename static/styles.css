@@ -16,14 +16,10 @@ Table Of Contents:
 07. Features
 08. Features Lightboxes
 09. Details
-11. Pricing
-13. Newsletter
-14. Footer
-15. Copyright
-16. Back To Top Button
-17. Extra Pages
-18. Sign Up and Log In Pages
-19. Media Queries
+10. Pricing
+11. Footer
+12. Copyright
+13. Back To Top Button
 ******************************************/
 
 /*****************************************
@@ -646,7 +642,7 @@ input[type='checkbox'] {
 
 .navbar-custom .nav-item .nav-link {
 	padding: 0.625rem 0.75rem 0.625rem 0.75rem;
-	color: #f7f5f5;
+	color: black;
 	opacity: 0.8;
 	text-decoration: none;
 	transition: all 0.2s ease;
