@@ -96,6 +96,13 @@ def login():
             return render_template('index.html')
     return render_template('log-in.html')
 
+#logging out from the session of the user or the administrator
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('/')
+
 #rendering the privacy policy page
 @app.route('/pp')
 def pp():
