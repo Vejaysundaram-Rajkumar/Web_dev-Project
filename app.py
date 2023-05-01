@@ -184,11 +184,49 @@ def accept(id):
     cursor.execute("DELETE FROM cardetails WHERE id =?",(id,))
     connection.commit()
     print("accepted ")
-    cursor.execute("INSERT INTO accept (customername, carname, yearsold,kmdriven,price) VALUES (?, ?, ?, ?, ?)", (data[0][0], data[0][1], data[0][2], data[0][3], data[0][4]))
+    cursor.execute("INSERT INTO accept (customername, carname, yearsold,kmdriven,price) VALUES (?, ?, ?, ?, ?)", (data[0][1], data[0][2], data[0][3], data[0][4], data[0][5]))
     connection.commit()
     connection.close()
     print("Updated in accepted table")
     return redirect('/fascarsadmin')
+
+@app.route('/reject/<int:id>', methods=['GET', 'POST'])
+def reject(id):
+    connection = connect_db()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM cardetails WHERE id =?",(id,))
+    data=cursor.fetchall()
+    cursor.execute("DELETE FROM cardetails WHERE id =?",(id,))
+    connection.commit()
+    print("rejected ")
+    cursor.execute("INSERT INTO reject (customername, carname, yearsold,kmdriven,price) VALUES (?, ?, ?, ?, ?)", (data[0][1], data[0][2], data[0][3], data[0][4], data[0][5]))
+    connection.commit()
+    connection.close()
+    print("Updated in rejected table")
+    return redirect('/fascarsadmin')
+
+#rendering the user profile table
+@app.route('/userprofile')
+def userprofile():
+    if 'username' not in session:
+        return redirect('/login')
+    else:
+        useremail = session['username']
+        conn = sqlite3.connect('customers.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM user WHERE email=?",(useremail,))
+        username=cursor.fetchone()
+        name=username[0]        
+        cursor.execute("SELECT * FROM cardetails WHERE customername=?",(name,))
+        pdetails = cursor.fetchall()
+        cursor.execute("SELECT * FROM accept WHERE customername=?",(name,))
+        adetails = cursor.fetchall()
+        cursor.execute("SELECT * FROM reject WHERE customername=?",(name,))
+        rdetails = cursor.fetchall()
+        cursor.close()
+        namee=names[0]
+        return render_template('profile.html', name=namee,pdetails=pdetails,adetails=adetails,rdetails=rdetails)
+        
 
 
 #rendering the privacy policy page
