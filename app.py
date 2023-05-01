@@ -6,6 +6,10 @@ import hashlib
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+
+names=['YourAccount','Signup','Login']
+
+
 #Connect with the customers database to store the user details
 def connect_db():
     connection = sqlite3.connect('customers.db')
@@ -15,8 +19,17 @@ def connect_db():
 #rendering the landing or the home page
 @app.route('/')
 def index():
-    return render_template("index.html")
-
+    if 'username' in session:
+        if session['username'] == 'admin@fascars.com':
+            return redirect('/fascarsadmin')
+        else:
+            but_name=names[0]
+            return render_template("index.html",name1=but_name,name2=but_name)
+    else:
+        but1=names[1]
+        but2=names[2]
+        return render_template("index.html",name1=but2,name2=but1)
+  
 
 @app.route('/fascarsadmin')
 def fascarsadmin():
@@ -71,8 +84,10 @@ def signin():
 def login():
     #checking if already any useer logged in and that person is in session or not.
     if 'username' in session:
-        return render_template('customerdash.html')
-    
+        if session['username'] == 'admin@fascars.com':
+            return redirect('/fascarsadmin')
+        else:
+            return redirect('/dash')
     #checking if the user subbmitted the form for login or not.
     if request.method == 'POST':
         try:
@@ -131,6 +146,49 @@ def dash():
     # Render the dashboard template 
     return render_template('customerdash.html',customer=username[0])
 
+@app.route('/carupload', methods=['GET', 'POST'])
+def carupload():
+    # to check the user is logged in or not
+    if 'username' not in session:
+        return redirect('/login')
+    
+    if request.method == 'POST':
+        car_name = request.form['carname']
+        age = request.form['yearsold']
+        dis=request.form['distance']
+        cost=request.form['price']
+        useremail = session['username']
+        conn = sqlite3.connect('customers.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM user WHERE email=?",(useremail,))
+        cname=cursor.fetchone()
+        try:
+            connection = connect_db()
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO cardetails (customername, carname, yearsold,kmdriven,price) VALUES (?, ?, ?, ?, ?)", (cname[0], car_name, age, dis,cost))
+            connection.commit()
+            connection.close()
+            print("cardetails updated")
+        except:
+            err_message="error updating the database"
+            return render_template('customerdash.html',message=err_message)
+    return redirect('/dash')
+
+@app.route('/accept/<int:id>', methods=['GET', 'POST'])
+def accept(id):
+    connection = connect_db()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM cardetails WHERE id =?",(id,))
+    data=cursor.fetchall()
+    print(data[0][0])
+    cursor.execute("DELETE FROM cardetails WHERE id =?",(id,))
+    connection.commit()
+    print("accepted ")
+    cursor.execute("INSERT INTO accept (customername, carname, yearsold,kmdriven,price) VALUES (?, ?, ?, ?, ?)", (data[0][0], data[0][1], data[0][2], data[0][3], data[0][4]))
+    connection.commit()
+    connection.close()
+    print("Updated in accepted table")
+    return redirect('/fascarsadmin')
 
 
 #rendering the privacy policy page

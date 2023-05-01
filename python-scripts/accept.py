@@ -5,7 +5,7 @@ conn = sqlite3.connect('customers.db')
 cursor = conn.cursor()
 
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS cardetails (
+CREATE TABLE IF NOT EXISTS accept (
   id INTEGER PRIMARY KEY AUTOINCREMENT ,
  customername TEXT NOT NULL,
   carname TEXT NOT NULL,

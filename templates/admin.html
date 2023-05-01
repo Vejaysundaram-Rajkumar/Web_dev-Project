@@ -67,7 +67,8 @@
                     <th>No of years old</th> 
                     <th>No of km Driven</th>
                     <th>Price</th>
-                    <th>More Info</th>
+                    <th>Accept</th>
+                    <th>Denied</th>
                 </thead>
                 <tbody>
                     {% for user in details %}
@@ -84,10 +85,14 @@
                         
                         <td style="border: 1px solid black;">{{ user[5] }}</td>
                         
-                        <td style="border: 1px solid black;"><div class="btn" >
-                        <span class="fas fa-info-circle"></span>
+                        <td style="border: 1px solid black;"><div class="btn"><a href="/accept/{{user[0]}}">
+                        <span class="fas fa-check"></span></a>
                         </div>
                         </td>
+                        <td style="border: 1px solid black;"><div class="btn" >
+                            <span class="fas fa-times"></span>
+                            </div>
+                            </td>
                     </tr>
                     {% endfor %}
                 </tbody>
