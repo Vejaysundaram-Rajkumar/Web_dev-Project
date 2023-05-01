@@ -70,33 +70,26 @@
                     <th>More Info</th>
                 </thead>
                 <tbody>
+                    {% for user in details %}
                     <tr class="align-middle alert border-bottom" role="alert">
-                        <td>
-                            <div  id="sno">
-                        </td>
-                        <td class="text-center">
-                            <div id="sno">
-                        </td>
-                        <td>
-                            
-                            <p class="m-0 fw-bold" id="carname"></p>
-                            
-                        </td>
-                        <td>
-                            <div class="fw-600" id="yearsdriven"></div>
-                        </td>
-                        <td >
-                            <div class="fw-600" id="totaldistance"></div>
-                        </td>
-                        <td>
-                            <div class="fw-600" id="ccost"></div>
-                        </td>
-                        <td>
-                            <div class="btn" >
-                                <span class="fas fa-info-circle"></span>
-                            </div>
+                        <td style="border: 1px solid black;">{{ user[0] }}</td>
+
+                        <td style="border: 1px solid black;">{{ user[1] }}</td>
+                        
+                        <td style="border: 1px solid black;">{{ user[2] }}</td>
+                        
+                        <td style="border: 1px solid black;">{{ user[3] }}</td>
+                        
+                        <td style="border: 1px solid black;">{{ user[4] }}</td>
+                        
+                        <td style="border: 1px solid black;">{{ user[5] }}</td>
+                        
+                        <td style="border: 1px solid black;"><div class="btn" >
+                        <span class="fas fa-info-circle"></span>
+                        </div>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

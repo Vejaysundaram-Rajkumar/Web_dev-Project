@@ -20,13 +20,28 @@ def index():
 
 @app.route('/fascarsadmin')
 def fascarsadmin():
-    return render_template("admin.html")
+    try:
+        if session['username'] == 'admin@fascars.com':
+            conn = sqlite3.connect('customers.db')
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM cardetails')
+            details = cursor.fetchall()
+            cursor.close()
+            return render_template('admin.html', details=details)
+        else:
+            return "Login as Admin"
+    except:
+            return "Login as Admin"
+    
 
 #rendering the signin page
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     if 'username' in session:
-        return redirect(url_for('#'))
+        if session['username'] == 'admin@fascars.com':
+            return redirect('/fascarsadmin')
+        else:
+            return redirect('/dash')
     if request.method == 'POST':
         username = request.form['sname']
         password = request.form['spassword']
@@ -105,7 +120,16 @@ def logout():
 #customer dashboard for buying,selling and repair booking
 @app.route('/dash')
 def dash():
-    return render_template('customerdash.html')
+    # to check the user is logged in or not
+    if 'username' not in session:
+        return redirect('/login')
+    useremail = session['username']
+    conn = sqlite3.connect('customers.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT username FROM user WHERE email=?",(useremail,))
+    username=cursor.fetchone()
+    # Render the dashboard template 
+    return render_template('customerdash.html',customer=username[0])
 
 
 
