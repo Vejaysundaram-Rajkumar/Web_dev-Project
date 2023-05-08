@@ -45,7 +45,7 @@
                     <a class="nav-link page-scroll" onclick="repair()">REPAIR YOUR CAR</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="/userprofile">PROFILE</a>
+                    <button class="nav-link page-scroll" onclick="window.location.href='/userprofile'">PROFILE</button>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link page-scroll" href="/logout">logout</a>
@@ -75,7 +75,7 @@
                         <div class="price"><span class="value">A Car</span></div>
                         <div class="divider"></div>
                         <div class="button-wrapper">
-                            <button class="service-button" onclick="buy()">Buy</button>
+                            <button class="service-button" onclick="window.location.href='/buy'">Buy</button>
                         </div>
                     </div>
                 </div> <!-- end of card -->
@@ -116,24 +116,24 @@
 <!-- pop up forms for buy,sell repair -->
 <div id="overlay1" class="overlay" style="display:none;">
 <div class="form-popup" id="repair">
-    <form action="/action_page.php" class="form-container">
-      <h1>repair</h1>
-  
-      <label for="email"><b>Email</b></label>
-      <input type="text" placeholder="Enter Email" name="email" required>
-  
-      <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required>
-  
-      <button type="submit" class="btn">Submit</button>
-      <button type="button" class="btn cancel" onclick="closerepair()">Close</button>
-    </form>
+    <form action="/carrepair" method="POST" class="form-container">
+        <h1>REPAIR</h1>
+        <input type="text" placeholder="Enter your car name" name="carname" id="carname" required>
+        <textarea id="repairdesc" name="repairdesc" rows="4" cols="50" placeholder="Enter the description of service you requiered" > </textarea>
+        <br><br><br>
+        <input type="number" placeholder="Enter Distance driven" name="distance" id-="distance" required>
+        <br><br><br>
+        <input type="number" placeholder="Enter Your phone number" name="pnumber" id-="pnumber" required>
+        <br><br><br>
+        <button type="submit" class="btn">Submit Repair application form</button>
+        <button type="button" class="btn cancel" onclick="closerepair()">Close</button>
+      </form>
   </div>
 </div>
 <div id="overlay2" class="overlay" style="display:none;">
 <div class="form-popup" id="sell">
       <form action="/carupload" method="POST" class="form-container">
-        <h1>sell</h1>
+        <h1>SELL</h1>
         <input type="text" placeholder="Enter your car name" name="carname" id="carname" required>
         <input type="number" placeholder="Enter no of years old" name="yearsold" id="yearsold" required>
         <br><br><br>
@@ -146,22 +146,7 @@
       </form>
     </div>
 </div>
-<div id="overlay3" class="overlay" style="display:none;">
-    <div class="form-popup" id="buy">
-      <form action="/action_page.php" class="form-container">
-        <h1>buy</h1>
-    
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter Email" name="email" required>
-    
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
-    
-        <button type="submit" class="btn">List</button>
-        <button type="button" class="btn cancel" onclick="closebuy()">Close</button>
-      </form>
-    </div>
-</div>
+
 
         <!-- Scripts -->
         <script src="static\js\jquery.min.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
@@ -174,6 +159,13 @@
 
 
         <script>
+            $(document).ready(function(){
+                if({repairm}=="true"){
+                    alert("Repair request sent sucessfully.")
+                }
+            })
+
+
             function repair() { 
               document.getElementById("repair").style.display = "block";
               document.getElementById("overlay1").style.display = "block";
@@ -194,16 +186,6 @@
             function closesell() {
               document.getElementById("sell").style.display = "none";
               document.getElementById("overlay2").style.display = "none";
-            }
-            
-            function buy() {
-              document.getElementById("buy").style.display = "block";
-              document.getElementById("overlay3").style.display = "block";
-            }
-            
-            function closebuy() {
-              document.getElementById("buy").style.display = "none";
-              document.getElementById("overlay3").style.display = "none";
             }
             </script>
 

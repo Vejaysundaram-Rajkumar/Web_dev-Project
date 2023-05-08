@@ -35,12 +35,21 @@ def index():
 def fascarsadmin():
     try:
         if session['username'] == 'admin@fascars.com':
+            useremail = session['username']
             conn = sqlite3.connect('customers.db')
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM cardetails')
-            details = cursor.fetchall()
+            cursor.execute("SELECT username FROM user WHERE email=?",(useremail,))
+            username=cursor.fetchone()
+            name=username[0]        
+            cursor.execute("SELECT * FROM cardetails")
+            rdetails = cursor.fetchall()
+            cursor.execute("SELECT * FROM carrepair")
+            rrdetails = cursor.fetchall()
+            cursor.execute("SELECT * FROM accept")
+            adetails = cursor.fetchall()
             cursor.close()
-            return render_template('admin.html', details=details)
+            namee=names[0]
+            return render_template('admin.html', name=namee,adetails=adetails,rrdetails=rrdetails,rdetails=rdetails)
         else:
             return "Login as Admin"
     except:
@@ -174,6 +183,36 @@ def carupload():
             return render_template('customerdash.html',message=err_message)
     return redirect('/dash')
 
+
+@app.route('/carrepair', methods=['GET', 'POST'])
+def carrepair():
+    # to check the user is logged in or not
+    if 'username' not in session:
+        return redirect('/login')
+    
+    if request.method == 'POST':
+        car_name = request.form['carname']
+        desc = request.form['repairdesc']
+        dis=request.form['distance']
+        phon=request.form['pnumber']
+        useremail = session['username']
+        conn = sqlite3.connect('customers.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM user WHERE email=?",(useremail,))
+        cname=cursor.fetchone()
+        try:
+            connection = connect_db()
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO carrepair (customername, carname,desc,kmdriven,phone) VALUES (?, ?, ?, ?, ?)", (cname[0], car_name, desc, dis,phon))
+            connection.commit()
+            connection.close()
+            print("cardetails updated")
+        except:
+            err_message="error updating the database"
+            return render_template('customerdash.html',message=err_message)
+    return redirect('/dash')
+
+
 @app.route('/accept/<int:id>', methods=['GET', 'POST'])
 def accept(id):
     connection = connect_db()
@@ -227,6 +266,15 @@ def userprofile():
         namee=names[0]
         return render_template('profile.html', name=namee,pdetails=pdetails,adetails=adetails,rdetails=rdetails)
         
+#buy a car 
+@app.route('/buy')
+def buy():
+    conn = sqlite3.connect('customers.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM accept')
+    details = cursor.fetchall()
+    cursor.close()
+    return render_template('buycar.html', details=details)
 
 
 #rendering the privacy policy page
