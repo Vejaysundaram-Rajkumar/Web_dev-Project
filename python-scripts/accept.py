@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS accept (
   carname TEXT NOT NULL,
    yearsold INTEGER NOT NULL,
   kmdriven INTEGER DEFAULT 0,
-  price INTEGER NOT NULL
+  price INTEGER NOT NULL,
+  phone INTEGER NOT NULL
 )
 ''')
 

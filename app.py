@@ -166,6 +166,7 @@ def carupload():
         age = request.form['yearsold']
         dis=request.form['distance']
         cost=request.form['price']
+        phones=request.form['phone']
         useremail = session['username']
         conn = sqlite3.connect('customers.db')
         cursor = conn.cursor()
@@ -174,7 +175,7 @@ def carupload():
         try:
             connection = connect_db()
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO cardetails (customername, carname, yearsold,kmdriven,price) VALUES (?, ?, ?, ?, ?)", (cname[0], car_name, age, dis,cost))
+            cursor.execute("INSERT INTO cardetails (customername, carname, yearsold,kmdriven,price,phone) VALUES (?, ?, ?, ?, ?, ?)", (cname[0], car_name, age, dis,cost,phones))
             connection.commit()
             connection.close()
             print("cardetails updated")
@@ -223,7 +224,7 @@ def accept(id):
     cursor.execute("DELETE FROM cardetails WHERE id =?",(id,))
     connection.commit()
     print("accepted ")
-    cursor.execute("INSERT INTO accept (customername, carname, yearsold,kmdriven,price) VALUES (?, ?, ?, ?, ?)", (data[0][1], data[0][2], data[0][3], data[0][4], data[0][5]))
+    cursor.execute("INSERT INTO accept (customername, carname, yearsold,kmdriven,price,phone) VALUES (?, ?, ?, ?, ?, ?)", (data[0][1], data[0][2], data[0][3], data[0][4], data[0][5], data[0][6]))
     connection.commit()
     connection.close()
     print("Updated in accepted table")
@@ -238,7 +239,7 @@ def reject(id):
     cursor.execute("DELETE FROM cardetails WHERE id =?",(id,))
     connection.commit()
     print("rejected ")
-    cursor.execute("INSERT INTO reject (customername, carname, yearsold,kmdriven,price) VALUES (?, ?, ?, ?, ?)", (data[0][1], data[0][2], data[0][3], data[0][4], data[0][5]))
+    cursor.execute("INSERT INTO reject (customername, carname, yearsold,kmdriven,price,phone) VALUES (?, ?, ?, ?, ?, ?)", (data[0][1], data[0][2], data[0][3], data[0][4], data[0][5], data[0][6]))
     connection.commit()
     connection.close()
     print("Updated in rejected table")
